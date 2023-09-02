@@ -1,3 +1,50 @@
+<script setup>
+import { RouterLink } from "vue-router";
+import { reactive, ref, watch } from "vue";
+import { useVuelidate } from "@vuelidate/core";
+import { email, required, sameAs } from "@vuelidate/validators";
+
+//importing elements
+import InputField from "../../components/FormElements./InputField.vue";
+
+//variable for switching password visibility
+const showPassword = ref(null);
+
+//input fields
+const formData = reactive({
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
+//field validation rules
+const validationRules = {
+  email: { required, email },
+  password: { required },
+  confirmPassword: { required, sameAs: sameAs(formData.password) },
+};
+
+//initializing validation
+const validation = useVuelidate(validationRules, formData);
+
+// function to generate message for empty fields
+const generateEmptyMessage = (element, value) => {
+  return element.$errors[0].$validator == "required"
+    ? element.$errors[0].$message.replace(
+        "Value",
+        value.charAt(0).toUpperCase() + value.slice(1)
+      )
+    : null;
+};
+
+//method to register user
+const registerUser = async () => {
+  //vaildate fields
+  const validationResult = await validation.value.$validate();
+  console.log(
+  );
+};
+</script>
 <template>
   <div
     class="min-h-screen max-w-screen bg-teal_dark text-base flex flex-col justify-center items-center"
@@ -17,22 +64,27 @@
       >
         <!--email input-->
         <input-field
-          v-model="email"
+          v-model:model-value="formData.email"
           :input-header="'Email'"
           :placeholder="'Enter your email'"
           :data-to-bind="formData.email"
+          @input="validation.email.$touch"
         ></input-field>
+        <!--password-->
         <input-field
-          input-type="password"
+          :input-type="showPassword ? 'text' : 'password'"
           :input-header="'Password'"
           :placeholder="'Create an password'"
+          @input="validation.password.$touch"
           v-model="formData.password"
         ></input-field>
+        <!--confirm password-->
         <input-field
-          input-type="password"
+          :input-type="showPassword ? 'text' : 'password'"
           :input-header="'Confirm password'"
           :placeholder="'Re-enter password'"
           v-model="formData.confirmPassword"
+          @input="validation.confirmPassword.$touch"
         ></input-field>
 
         <!--forgot password?-->
@@ -41,22 +93,22 @@
         >
           <!--show password-->
           <span class="flex items-center gap-2">
-            <input type="checkbox" :value="showPassword" />
+            <input type="checkbox" :value="'show'" v-model="showPassword" />
             <label for="" class="no-underline cursor-default hover:no-underline"
               >Show password</label
             >
           </span>
         </span>
         <input
-          @click="showFormData"
           type="submit"
           value="Create my account"
           class="cursor-pointer bg-blue_shade_1 text-[white] font-semibold py-3 rounded-md"
+          @click.prevent="registerUser"
         />
         <span
           class="flex justify-center items-center text-[.75rem] text-blue_shade_2 font-semibold hover:underline"
         >
-          <router-link to="/signup"
+          <router-link to="/auth/register"
             >Oops! I haven't created an account yet</router-link
           >
         </span>
@@ -64,32 +116,5 @@
     </form>
   </div>
 </template>
-
-<script setup>
-import { RouterLink } from "vue-router";
-import { reactive, ref, watch } from "vue";
-
-//importing elements
-import InputField from "../../components/FormElements./InputField.vue";
-
-const showPassword = ref(null);
-
-const email = ref([]);
-
-const formData = reactive({
-  email: "",
-  password: "",
-  confirmPassword: "",
-});
-
-watch(
-  () => formData.email,
-  (email) => {
-    console.log("email=", email);
-  }
-);
-
-const showFormData = () => alert(email.value);
-</script>
 
 <style scoped></style>
