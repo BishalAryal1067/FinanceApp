@@ -1,11 +1,14 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { email, required, sameAs } from "@vuelidate/validators";
-
-//importing elements
+import { email, minLength, required, sameAs } from "@vuelidate/validators";
 import InputField from "../../components/FormElements./InputField.vue";
+import { supabase } from "../../controllers/Auth/suapbaseConnection";
+import { useRouter } from "vue-router";
+
+//initialize router
+const router = useRouter();
 
 //variable for switching password visibility
 const showPassword = ref(null);
@@ -20,29 +23,31 @@ const formData = reactive({
 //field validation rules
 const validationRules = {
   email: { required, email },
-  password: { required },
-  confirmPassword: { required, sameAs: sameAs(formData.password) },
+  password: { required, min: minLength(7) },
+  confirmPassword: {
+    required,
+    same: sameAs(computed(() => formData.password)),
+  },
 };
 
 //initializing validation
 const validation = useVuelidate(validationRules, formData);
 
-// function to generate message for empty fields
-const generateEmptyMessage = (element, value) => {
-  return element.$errors[0].$validator == "required"
-    ? element.$errors[0].$message.replace(
-        "Value",
-        value.charAt(0).toUpperCase() + value.slice(1)
-      )
-    : null;
-};
-
 //method to register user
 const registerUser = async () => {
   //vaildate fields
   const validationResult = await validation.value.$validate();
-  console.log(
-  );
+
+  if (validationResult) {
+    let { user, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+    });
+    if (!error) {
+      alert("User created successfully");
+      router.push({ name: "auth.login" });
+    }
+  }
 };
 </script>
 <template>
@@ -64,28 +69,62 @@ const registerUser = async () => {
       >
         <!--email input-->
         <input-field
-          v-model:model-value="formData.email"
+          v-model:modelValue="formData.email"
           :input-header="'Email'"
           :placeholder="'Enter your email'"
           :data-to-bind="formData.email"
           @input="validation.email.$touch"
-        ></input-field>
+          :has-error="validation.email.$errors.length > 0"
+        >
+          <span
+            v-if="validation.email.$errors.length > 0"
+            class="text-red_1 text-xs"
+          >
+            {{ validation.email.$errors[0].$message }} *
+          </span>
+        </input-field>
         <!--password-->
         <input-field
           :input-type="showPassword ? 'text' : 'password'"
           :input-header="'Password'"
           :placeholder="'Create an password'"
           @input="validation.password.$touch"
-          v-model="formData.password"
-        ></input-field>
+          v-model:model-value="formData.password"
+          :has-error="validation.password.$errors.length > 0"
+        >
+          <span
+            v-if="validation.password.$errors.length > 0"
+            class="text-red_1 text-xs"
+          >
+            {{ validation.password.$errors[0].$message }} *
+          </span>
+        </input-field>
         <!--confirm password-->
         <input-field
           :input-type="showPassword ? 'text' : 'password'"
           :input-header="'Confirm password'"
           :placeholder="'Re-enter password'"
-          v-model="formData.confirmPassword"
+          v-model:model-value="formData.confirmPassword"
           @input="validation.confirmPassword.$touch"
-        ></input-field>
+          :has-error="validation.confirmPassword.$errors.length > 0"
+        >
+          <span
+            v-if="
+              validation?.confirmPassword?.$errors[0]?.$validator == 'required'
+            "
+            class="text-red_1 text-xs"
+          >
+            {{ validation.confirmPassword.$errors[0].$message }} *
+          </span>
+          <span
+            v-else-if="
+              validation?.confirmPassword?.$errors[0]?.$validator == 'same'
+            "
+            class="text-red_1 text-xs"
+          >
+            {{ "Passwords don't match " }} *
+          </span>
+        </input-field>
 
         <!--forgot password?-->
         <span

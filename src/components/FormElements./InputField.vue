@@ -8,11 +8,13 @@
       @input="$emit('update:modelValue', $event.target.value)"
       :type="inputType"
       :placeholder="placeholder"
-      class="border-[.1rem] border-blac_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 min-w-[20rem] outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
+      class="border-[.1rem] border-black_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 min-w-[20rem] outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
+      :class="{
+        'outline-red_1 outline-offset-[-1px] focus:outline-red_1 focus:outline-offset-[-1px]':
+          hasError,
+      }"
     />
-    <span id="error-message" v-if="errorMessage?.length > 0">
-      {{ errorMessage }}*
-    </span>
+    <slot></slot>
   </div>
 </template>
 
@@ -23,9 +25,6 @@ defineProps({
   inputType: {
     type: String,
     default: "text",
-  },
-  errorMessage: {
-    type: String,
   },
   placeholder: {
     type: String,
@@ -38,6 +37,10 @@ defineProps({
   modelValue: {
     type: String || Number,
     required: true,
+  },
+  hasError: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>
