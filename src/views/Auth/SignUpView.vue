@@ -44,7 +44,8 @@ const registerUser = async () => {
       password: formData.password,
     });
     if (!error) {
-      alert("User created successfully");
+      const confirmationRoute = router.resolve({ name: "auth.confirmation" });
+      window.open(confirmationRoute.href);
       router.push({ name: "auth.login" });
     }
   }
@@ -147,9 +148,7 @@ const registerUser = async () => {
         <span
           class="flex justify-center items-center text-[.75rem] text-blue_shade_2 font-semibold hover:underline"
         >
-          <router-link to="/auth/register"
-            >Oops! I haven't created an account yet</router-link
-          >
+          <router-link to="/auth/login">Already have an account?</router-link>
         </span>
       </div>
     </form>

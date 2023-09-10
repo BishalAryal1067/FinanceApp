@@ -1,7 +1,6 @@
-import { createWebHistory, createRouter } from "vue-router";
-
-import LoginView from "../AuthViews/LoginView.vue";
-import SignUpView from "../AuthViews/SignUpView.vue";
+import LoginView from "./LoginView.vue";
+import SignUpView from "./SignUpView.vue";
+import ConfirmationView from "./ConfirmationView.vue";
 
 const AuthRoutes = {
   path: "/auth",
@@ -16,6 +15,11 @@ const AuthRoutes = {
       path: "register",
       name: "auth.register",
       component: SignUpView,
+    },
+    {
+      path: "confirmation",
+      name: "auth.confirmation",
+      component: ConfirmationView,
     },
   ],
 };
