@@ -6,8 +6,8 @@ import { supabase } from "../../controllers/Auth/suapbaseConnection";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 //importing elements
-import InputField from "../../components/FormElements./InputField.vue";
-import Button from "../../components/FormElements./Button.vue";
+import InputField from "../../components/FormElements/InputField.vue";
+import Button from "../../components/FormElements/Button.vue";
 import Alert from "../../components/Icons/Alert.vue";
 import { convertToHex } from "../../helpers/colorConverter";
 //import router

@@ -1,5 +1,12 @@
-<script setup></script>
+<script setup>
+import { RouterView } from "vue-router";
+import Navbar from "../../components/Navigation/Navbar.vue";
+</script>
 
 <template>
-  <div></div>
+  <div
+    class="bg-black_1 w-screen max-w-screen h-screen max-h-screen flex gap-3"
+  >
+    <Navbar />
+  </div>
 </template>
