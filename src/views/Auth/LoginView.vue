@@ -1,15 +1,15 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { reactive, ref, onMounted, onUpdated } from "vue";
-import { supabase } from "../../controllers/Auth/suapbaseConnection";
+import { supabase } from "@controller/suapbaseConnection";
 //importing vuelidate for validation
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 //importing elements
-import InputField from "../../components/FormElements/InputField.vue";
-import Button from "../../components/FormElements/Button.vue";
-import Alert from "../../components/Icons/Alert.vue";
-import { convertToHex } from "../../helpers/colorConverter";
+import InputField from "@component/FormElements/InputField.vue";
+import Button from "@component/FormElements/Button.vue";
+import Alert from "@component/Icons/Alert.vue";
+import { convertToHex } from "@helper/colorConverter.js";
 //import router
 import { useRouter } from "vue-router";
 

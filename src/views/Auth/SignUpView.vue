@@ -3,8 +3,8 @@ import { RouterLink } from "vue-router";
 import { reactive, ref, watch, computed } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email, minLength, required, sameAs } from "@vuelidate/validators";
-import InputField from "../../components/FormElements/InputField.vue";
-import { supabase } from "../../controllers/Auth/suapbaseConnection";
+import InputField from "@component/FormElements/InputField.vue";
+import { supabase } from "@controller/suapbaseConnection";
 import { useRouter } from "vue-router";
 
 //initialize router

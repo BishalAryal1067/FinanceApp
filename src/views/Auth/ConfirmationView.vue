@@ -1,5 +1,5 @@
 <script setup>
-import Certificate from '../../components/Icons/Certificate.vue';
+import Certificate from '@icon/Certificate.vue';
 </script>
 
 <template>

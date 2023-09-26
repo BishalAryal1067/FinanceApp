@@ -18,6 +18,7 @@ export default {
       black_1: "#201D2A",
       black_2: "#36454F",
       green_1: "#50C878",
+      green_light:"#C1FFD6",
       red_1: "#fd3434",
       red_2: "#df6969",
     },
