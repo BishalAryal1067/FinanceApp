@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { reactive, ref, onMounted, onUpdated } from "vue";
-import { supabase } from "@controller/suapbaseConnection";
+import { supabase } from "@controller/supabaseConnection";
 //importing vuelidate for validation
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";

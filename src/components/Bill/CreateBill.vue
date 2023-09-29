@@ -34,7 +34,7 @@ import Button from "@component/FormElements/Button.vue";
 import Add from '@icon/Add.vue';
 import Trash from '@icon/Trash.vue'
 import BasicModal from '@component/Modal/BasicModal.vue';
-import { supabase } from "@controller/suapbaseConnection";
+import { supabase } from "@controller/supabaseConnection";
 
 const displayModal = ref(false);
 const toggleModal = () => displayModal.value = !displayModal.value;

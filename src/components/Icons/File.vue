@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <i
-    class="fa-solid fa-coins"
+    class="fa-solid fa-file"
     :style="`color: ${convertToHex(fill)}`"
   ></i>
 </template>

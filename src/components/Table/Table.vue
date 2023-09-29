@@ -1,0 +1,65 @@
+<template>
+    <div id="table-wrapper" :class="tableStyle">
+        <!--table header-->
+        <div id="table-header" class="py-3 p-8 border-b-2 border-b-grey_1 flex justify-between" :class="headingStyle">
+            <p>{{ tableHeading }}</p>
+            <tippy content="Refresh table" class="cursor-pointer"> <Reload/> </tippy>
+        </div>
+        <div id="table-body" class="w-full h-full">
+            <!--render this when no data is available-->
+            <div v-if="tableData.length == 0" class="w-full h-full flex flex-col justify-center items-center gap-1">
+                <span class="bg-grey_1 flex justify-center items-center w-[2rem] h-[2rem] box-border rounded-lg p-5">
+                    <Chart class="text-2xl" />
+                </span>
+                <p class="text-[white] text-xl">No data is available</p>
+            </div>
+            <!--render table when data is present-->
+            <table v-else class="mx-3 table-fixed w-full">
+               <tr>
+                 <th v-for="(heading, key) in headings" :id="key" align="left"> {{ heading }} </th>
+               </tr>
+               <tr v-for="data in tableData">
+                  <td>{{ data.item }}</td>
+                  <td>{{ data.date }}</td>
+                  <td> {{ data.cost }}</td>
+               </tr>
+            </table>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import Chart from "@icon/Chart.vue"
+import Reload from "@icon/Reload.vue"
+
+
+defineProps({
+    tableData: {
+        type: Array,
+        default: [],
+    },
+    tableStyle: {
+        type: String,
+    },
+    tableHeading: {
+        type: String,
+        default: 'Table heading'
+    },
+    headingStyle: {
+        type: String,
+    },
+    headings:{
+        type:Array
+    }
+
+})
+</script>
+
+
+<style scoped>
+table tr th,
+table tr td{
+    padding: 5px;
+    text-transform: capitalize;
+}
+</style>
