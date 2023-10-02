@@ -14,7 +14,7 @@
                 <p class="text-[white] text-xl">No data is available</p>
             </div>
             <!--render table when data is present-->
-            <table v-else class="mx-3 table-fixed w-full">
+            <table v-else class="mx-3 table-fixed w-full overflow-y-scroll">
                <tr>
                  <th v-for="(heading, key) in headings" :id="key" align="left"> {{ heading }} </th>
                </tr>
