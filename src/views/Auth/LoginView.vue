@@ -4,14 +4,22 @@ import { reactive, ref, onMounted, onUpdated } from "vue";
 import { supabase } from "@controller/supabaseConnection";
 //importing vuelidate for validation
 import { useVuelidate } from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { email, required } from "@vuelidate/validators";
 //importing elements
 import InputField from "@component/FormElements/InputField.vue";
 import Button from "@component/FormElements/Button.vue";
-import Alert from "@component/Icons/Alert.vue";
 import { convertToHex } from "@helper/colorConverter.js";
 //import router
 import { useRouter } from "vue-router";
+import { authStore } from "@store/AuthStore";
+//import icon
+import Icon from "@icon/Icon.vue";
+
+
+
+const authSession = authStore();
+console.log(authSession);
+
 
 const router = useRouter();
 
@@ -22,6 +30,10 @@ const formData = reactive({
 
 onMounted(() => {
   authError.value = [];
+  if(authSession.userSession){
+    console.log("current user =", authSession.userSession.email);
+    router.push({ name: "dashboard" });
+  }
 });
 
 const authError = ref([]);
@@ -45,6 +57,7 @@ const loginUser = async () => {
       if (error) {
         authError.value.push("Unable to login!");
       } else {
+        authSession.setSession(formData.email);
         router.push({ name: "dashboard" });
       }
     } else {
@@ -91,7 +104,8 @@ const loginUser = async () => {
           v-if="authError.length > 0"
           class="w-full flex items-center justify-center gap-2 border-[.5px] border-red_1 rounded-lg py-2 text-xs text-red_1"
         >
-          <Alert :fill="'red_1'" />
+
+        <Icon :iconName="'triangle-exclamation'" :fill="'red_1'"/>
           {{ authError[0] }}
         </div>
 

@@ -6,6 +6,9 @@ import router from "./router/router";
 //vue tippy library for the tooltips
 import VueTippy from "vue-tippy";
 import "tippy.js/dist/tippy.css";
+//pinia for state management
+import { createPinia } from "pinia";
+const pinia = createPinia();
 
 const app = createApp(App);
 app.use(VueTippy, {
@@ -19,4 +22,5 @@ app.use(VueTippy, {
   theme: "light",
 });
 app.use(router);
+app.use(pinia);
 app.mount("#app");

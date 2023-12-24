@@ -9,10 +9,10 @@
       :type="inputType"
       :placeholder="placeholder"
       class="border-[.1rem] border-black_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 min-w-[20rem] outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
-      :class="{
+      :class="[{
         'outline-red_1 outline-offset-[-1px] focus:outline-red_1 focus:outline-offset-[-1px]':
           hasError,
-      }"
+      }, customStyle]"
     />
     <slot></slot>
   </div>
@@ -42,5 +42,8 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  customStyle:{
+    type: String
+  }
 });
 </script>

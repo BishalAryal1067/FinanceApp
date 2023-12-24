@@ -7,7 +7,5 @@
 <script setup>
 import GlobalLayout from '@layout/GlobalLayout.vue';
 import CreateBill from '@component/Bill/CreateBill.vue';
-
-
 </script>
 

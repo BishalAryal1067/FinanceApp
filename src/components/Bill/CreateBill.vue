@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col">
-    <div id="row" v-for="(row, index) in rows" :id="index" class="flex gap-3 py-2 items-center">
-      <InputField :placeholder="'Enter bill item'" v-model:modelValue="row.item" />
-      <InputField :placeholder="'Enter total cost'" v-model="row.cost" />
+    <!-- <div id="row" v-for="(row, index) in rows" :id="index" class="flex gap-3 py-2 items-center">
+      <InputField :placeholder="'Enter bill item'" v-model:modelValue="row.items.itemName" />
+      <InputField :placeholder="'Enter total cost'" v-model="row.items.cost" />
       <div id="date" class="h-full flex items-center gap-3">
         <span
           class="bg-green_light border-[1px] rounded-lg border-green_1 flex h-fit justify-center items-center text-sm font-medium text-black_2 py-1 px-3 cursor-pointer">Today</span>
@@ -11,10 +11,12 @@
         <InputField :input-type="'date'" v-model="row.date" />
       </div>
       <span class="bg-red_2 flex p-2 rounded-lg cursor-pointer" @click="removeRow(index)">
-        <Trash />
+        <Icon :iconName="'trash'"/>
       </span>
 
-    </div>
+    </div> -->
+    <!--new bill-->
+
     <!--button sections-->
     <div class="flex gap-3 pt-3">
       <Button :label="'Add new item'" :class="[buttonClass, 'bg-blue_light']" @click="addRow">
@@ -25,14 +27,31 @@
     <!--success Modal-->
     <BasicModal :show-modal="displayModal" @close="toggleModal" :heading="modalData.title" :message="modalData.message" />
   </div>
+
+  <div id="bill" class="bg-grey_2 max-w-fit box-border px-3 py-2 rounded">
+    <div id="bill-header" class="flex gap-2">
+      <InputField :placeholder="'Bill heading...'"/>
+      <InputField :inputType="'date'" :placeholder="'date'"/>
+  </div>
+  <hr class="w-full h-[.2175rem] bg-grey_2 border-dashed stroke-[12px] my-2" />
+    <div id="items-area" class="max-w-full">
+       <div id="item-header" class="w-full flex justify-end">
+         <span class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2">
+         <Icon :iconName="'add'"/>
+         Add new item
+        </span>
+
+        <Icon :iconName="'home'" :fill="'grey_1'"/>
+       </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import InputField from "@component/FormElements/InputField.vue"
 import Button from "@component/FormElements/Button.vue";
-import Add from '@icon/Add.vue';
-import Trash from '@icon/Trash.vue'
+import Icon from '@icon/Icon.vue';
 import BasicModal from '@component/Modal/BasicModal.vue';
 import { supabase } from "@controller/supabaseConnection";
 
@@ -44,26 +63,22 @@ const modalData = reactive({
 })
 
 const rows = ref([
-  {
-    item: '',
-    cost: '',
-    date: '',
-  }
+ {
+  date : '',
+  items : [{itemName: '', price: ''}]
+ }
 ]);
 
 console.log(rows)
 const addRow = () => {
-  rows.value.push({
-    item: '',
-    cost: '',
-    date: '',
-  })
-  console.log(rows)
+  rows.value.push( {
+  date : '',
+  items : [{itemName: '', price: ''}]
+ })
 }
 
 const removeRow = (index) => {
   rows.value.splice(index, 1)
-  console.log(rows)
 }
 
 const bill = ref(null)

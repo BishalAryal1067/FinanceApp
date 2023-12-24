@@ -33,6 +33,8 @@ const validationRules = {
 //initializing validation
 const validation = useVuelidate(validationRules, formData);
 
+console.log(supabase);
+
 //method to register user
 const registerUser = async () => {
   //vaildate fields
@@ -43,12 +45,15 @@ const registerUser = async () => {
       email: formData.email,
       password: formData.password,
     });
+    console.log(user);
     if (!error) {
       const confirmationRoute = router.resolve({ name: "auth.confirmation" });
       window.open(confirmationRoute.href);
       router.push({ name: "auth.login" });
     }
+    console.log(error);
   }
+
 };
 </script>
 <template>

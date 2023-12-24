@@ -3,13 +3,14 @@
         <!--table header-->
         <div id="table-header" class="py-3 p-8 border-b-2 border-b-grey_1 flex justify-between" :class="headingStyle">
             <p>{{ tableHeading }}</p>
-            <tippy content="Refresh table" class="cursor-pointer"> <Reload/> </tippy>
+            <tippy content="Refresh table" class="cursor-pointer"> <Icon :iconName="'repeat'"/></tippy>
         </div>
         <div id="table-body" class="w-full h-full">
             <!--render this when no data is available-->
             <div v-if="tableData.length == 0" class="w-full h-full flex flex-col justify-center items-center gap-1">
                 <span class="bg-grey_1 flex justify-center items-center w-[2rem] h-[2rem] box-border rounded-lg p-5">
                     <Chart class="text-2xl" />
+                    <Icon :iconName="'simple-chart'"/>
                 </span>
                 <p class="text-[white] text-xl">No data is available</p>
             </div>
@@ -29,8 +30,7 @@
 </template>
 
 <script setup>
-import Chart from "@icon/Chart.vue"
-import Reload from "@icon/Reload.vue"
+import Icon from "@icon/Icon.vue"
 
 
 defineProps({
