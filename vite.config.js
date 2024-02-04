@@ -18,7 +18,7 @@ export default defineConfig({
       "@layout":fileURLToPath(new URL("./src/layouts", import.meta.url)),
       "@store":fileURLToPath(new URL("./src/store", import.meta.url)),
     },  
-  },
+  }
 });
 
 

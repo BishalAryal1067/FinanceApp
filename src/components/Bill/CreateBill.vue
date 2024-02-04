@@ -36,12 +36,12 @@
   <hr class="w-full h-[.2175rem] bg-grey_2 border-dashed stroke-[12px] my-2" />
     <div id="items-area" class="max-w-full">
        <div id="item-header" class="w-full flex justify-end">
-         <span class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2">
+         <span 
+         class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2"
+         @click="addRow">
          <Icon :iconName="'add'"/>
          Add new item
         </span>
-
-        <Icon :iconName="'home'" :fill="'grey_1'"/>
        </div>
     </div>
   </div>
@@ -64,17 +64,16 @@ const modalData = reactive({
 
 const rows = ref([
  {
-  date : '',
   items : [{itemName: '', price: ''}]
  }
 ]);
 
-console.log(rows)
+
 const addRow = () => {
-  rows.value.push( {
-  date : '',
+  rows.value.push({
   items : [{itemName: '', price: ''}]
  })
+ console.log(rows.value)
 }
 
 const removeRow = (index) => {
