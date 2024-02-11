@@ -1,0 +1,11 @@
+name: deployment-pipline
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+
+on: [push]
+jobs: 
+    deploying-last-push:
+        runs-on: [linux, windows-latest]
+        steps:
+        - run: echo Deploying code !
+        
+

@@ -24,7 +24,6 @@ const handleNavigation = async (item)=>{
 const handleActiveRoute = (path)=>{
   activeNavItem.value.pop();
     activeNavItem.value.push(path);
-    console.log('The active route is:', activeNavItem.value)
 }
 
 onMounted(()=>{
@@ -39,7 +38,7 @@ onMounted(()=>{
   >
     <div id="nav-box" 
     v-for="(item, index) in navItems" 
-    class="cursor-pointer flex flex-col justify-center items-center gap-1" 
+    class="cursor-pointer flex flex-col justify-center items-center gap-[.125rem]" 
     @click="handleNavigation(item)"
     >
       <tippy :content="item.title" :id="index">
@@ -63,5 +62,6 @@ onMounted(()=>{
 .v-leave-to {
   opacity: 0;
   transform: scale(0);
+  transform: translateY(10px);
 }
 </style>

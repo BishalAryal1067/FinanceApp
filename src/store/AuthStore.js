@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref,reactive, computed} from "vue";
+import {ref, computed} from "vue";
 
 const localStorage = window.localStorage
 

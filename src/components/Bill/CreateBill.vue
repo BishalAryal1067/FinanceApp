@@ -1,52 +1,3 @@
-<template>
-  <div class="flex flex-col">
-    <!-- <div id="row" v-for="(row, index) in rows" :id="index" class="flex gap-3 py-2 items-center">
-      <InputField :placeholder="'Enter bill item'" v-model:modelValue="row.items.itemName" />
-      <InputField :placeholder="'Enter total cost'" v-model="row.items.cost" />
-      <div id="date" class="h-full flex items-center gap-3">
-        <span
-          class="bg-green_light border-[1px] rounded-lg border-green_1 flex h-fit justify-center items-center text-sm font-medium text-black_2 py-1 px-3 cursor-pointer">Today</span>
-        <span
-          class="bg-green_light border-[1px] rounded-lg border-green_1 flex h-fit justify-center items-center text-sm font-medium text-black_2 py-1 px-3 cursor-pointer">Yesterday</span>
-        <InputField :input-type="'date'" v-model="row.date" />
-      </div>
-      <span class="bg-red_2 flex p-2 rounded-lg cursor-pointer" @click="removeRow(index)">
-        <Icon :iconName="'trash'"/>
-      </span>
-
-    </div> -->
-    <!--new bill-->
-
-    <!--button sections-->
-    <div class="flex gap-3 pt-3">
-      <Button :label="'Add new item'" :class="[buttonClass, 'bg-blue_light']" @click="addRow">
-        <Add :fill="'teal_dark'" />
-      </Button>
-      <Button :label="'Save'" :class="[buttonClass, 'bg-green_1']" @click="saveData" />
-    </div>
-    <!--success Modal-->
-    <BasicModal :show-modal="displayModal" @close="toggleModal" :heading="modalData.title" :message="modalData.message" />
-  </div>
-
-  <div id="bill" class="bg-grey_2 max-w-fit box-border px-3 py-2 rounded">
-    <div id="bill-header" class="flex gap-2">
-      <InputField :placeholder="'Bill heading...'"/>
-      <InputField :inputType="'date'" :placeholder="'date'"/>
-  </div>
-  <hr class="w-full h-[.2175rem] bg-grey_2 border-dashed stroke-[12px] my-2" />
-    <div id="items-area" class="max-w-full">
-       <div id="item-header" class="w-full flex justify-end">
-         <span 
-         class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2"
-         @click="addRow">
-         <Icon :iconName="'add'"/>
-         Add new item
-        </span>
-       </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import InputField from "@component/FormElements/InputField.vue"
@@ -55,62 +6,83 @@ import Icon from '@icon/Icon.vue';
 import BasicModal from '@component/Modal/BasicModal.vue';
 import { supabase } from "@controller/supabaseConnection";
 
-const displayModal = ref(false);
-const toggleModal = () => displayModal.value = !displayModal.value;
-const modalData = reactive({
-  title: '',
-  message: ''
-})
+//styling for button
+const buttonClass = 'px-4 py-2 rounded-lg max-w-fit box-border'
 
-const rows = ref([
- {
-  items : [{itemName: '', price: ''}]
- }
-]);
+//variables for billing
+const bill = reactive([])
+const columnHeadings = ['Item', 'Quantity', 'Rate', 'Total'];
 
-
-const addRow = () => {
-  rows.value.push({
-  items : [{itemName: '', price: ''}]
- })
- console.log(rows.value)
-}
-
-const removeRow = (index) => {
-  rows.value.splice(index, 1)
-}
-
-const bill = ref(null)
-onMounted(async () => {
-  const { data, error } = await supabase.from('Bill').select('*');
-  if (!error) {
-    bill.value = data;
-    console.log('bill=', bill.value)
-  }
-  else {
-    console.log('error ==', error)
-  }
-})
-const errors = ref([])
-const saveData = async () => {
-  for (const row of rows.value) {
-    // Insert each row into the "Bill" table
-    const { data, error } = await supabase.from('Bill').insert([row]);
-    error ? errors.value.push(error) : errors.value = [];
-  }
-  if (errors.value.length == 0) {
-    rows.value = [];
-    rows.value.push({
-      item: '',
-      cost: '',
-      date: '',
-    })
-    modalData.title = 'Success';
-    modalData.message = 'Data saved successfully'
-    toggleModal();
-  }
+//adding row
+const addRow = ()=>{
+  bill.push({item:'', qty:'', rate:'', total:''});
 }
 
 
-const buttonClass = 'px-4 py-2 rounded-lg'
+
+//custom width for input fields
+const width = 'min-w-[12rem] max-w-[12rem]';
+
+//saving bill details
+const saveBill = ()=>{
+  const billDetails = JSON.stringify(bill)
+  console.log(billDetails);
+}
+
 </script>
+
+<template>
+  <div class="flex flex-col mt-4 gap-2">
+    <!--header-->
+    <Button 
+    :label="'Bill'" 
+    :class="[buttonClass, 'bg-blue_light']">
+   <Icon :iconName="'plus'" fill="black"/>
+  </Button>
+  <!--Bill section-->
+  <div id="bill-section" class="w-full box-border pr-2 flex-wrap">
+    <!--bill-->
+    <div id="bill" class="bg-grey_2 max-w-fit box-border px-3 py-2 rounded">
+      <div id="bill-header" class="flex gap-2">
+        <InputField :placeholder="'Bill heading...'"/>
+        <InputField :inputType="'date'" :placeholder="'date'"/>
+        <span 
+        class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2"
+        @click="addRow">
+        <Icon :iconName="'add'"/>
+        Add
+       </span>
+       <!--save button-->
+       <Button 
+       :label="'Save Bill'" 
+       :class="[buttonClass, 'bg-[aqua]']"
+       @click="saveBill"></Button>
+    </div>
+    <hr class="w-full h-[.2175rem] bg-grey_2 border-dashed stroke-[12px] my-2" />
+      <div id="items-area" class="max-w-full">
+        <!--heading-->
+        <div id="column-headings" class="w-full flex justify-between">
+          <span v-for="heading in columnHeadings" class="capitalize flex justify-start min-w-[12rem] max-w-[12rem] pl-0 box-border"> {{ heading }} </span>
+        </div>
+        <!--empty-->
+          <div id="empty-row" class="w-full flex justify-start" v-if="bill.length == 0">
+            <p class="text-xs my-2 italic text-grey_1 font-medium">[Note*]: No item is added. Click on the add item above then enter details</p>
+          </div>
+        <!--items-->
+            <div id="row" v-for="row in bill" class="w-full flex justify-between gap-2 items-center mb-2">
+              <InputField type="text" :customStyle="width" v-model="row.item"/>
+              <InputField type="text" :customStyle="width" v-model="row.qty"/>
+              <InputField type="text" :customStyle="width" v-model="row.rate"/>
+              <InputField type="text" :customStyle="width" v-model="row.rate"/>
+              <Icon :iconName="'trash'" :fill="'red_1'" class="cursor-pointer" alt="delete"/>
+           </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</template>
+
+
+
+
+
