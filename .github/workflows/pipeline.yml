@@ -1,16 +1,22 @@
 name: deployment-pipline
 run-name: Deploy to ${{ github.deploy_target }} by @${{ github.actor }}
 
-on: [push]
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+
 jobs: 
-    deploying-last-push:
-        runs-on: [linux, windows-latest]
+    deploying:
+        runs-on: ubuntu-latest
         steps:
-        - run: echo Deploying code !
         - uses: actions/checkout@v1
-          with: 
-            node-version: 20
-            run: npm install
+        - run: echo "Deploying code!"
+
 
 
 
