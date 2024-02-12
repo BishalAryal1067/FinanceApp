@@ -1,21 +1,16 @@
-name: deployment-pipline
-run-name: Deploy to ${{ github.deploy_target }} by @${{ github.actor }}
+name: deployment
+run-name: pushed by @${{ github.actor }}
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+    push: 
     workflow_dispatch:
 
 jobs: 
     deploying:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v1
-        - run: echo "Deploying code!"
+        - uses: actions/checkout@v4
+        - run: echo "Deploying code !"
 
 
 

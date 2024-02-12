@@ -5,29 +5,44 @@ import Button from "@component/FormElements/Button.vue";
 import Icon from '@icon/Icon.vue';
 import BasicModal from '@component/Modal/BasicModal.vue';
 import { supabase } from "@controller/supabaseConnection";
+import {authStore} from "@store/AuthStore.js";
 
 //styling for button
 const buttonClass = 'px-4 py-2 rounded-lg max-w-fit box-border'
 
 //variables for billing
 const bill = reactive([])
-const columnHeadings = ['Item', 'Quantity', 'Rate', 'Total'];
 
 //adding row
 const addRow = ()=>{
   bill.push({item:'', qty:'', rate:'', total:''});
 }
 
+//deleting row
+const deleteRow = (index) =>{
+  console.log(index);
+  bill.splice(index,1);
+  console.log(bill)
+}
 
+//getting current user
+const _AUTH_STORE = authStore();
+const _USER_EMAIL = _AUTH_STORE.getSession?.email;
 
-//custom width for input fields
-const width = 'min-w-[12rem] max-w-[12rem]';
 
 //saving bill details
-const saveBill = ()=>{
-  const billDetails = JSON.stringify(bill)
-  console.log(billDetails);
+// const saveBill = ()=>{
+//   const billDetails = JSON.stringify({user : _USER_EMAIL, billDetails: bill})
+//   console.log(billDetails);
+// }
+
+//calculate row total
+const calculateRowTotal = (row)=>{
+  const qty = Number(row.qty?.trim().match(/[^a-z]+/));
+  const rate = Number(row.rate?.trim().match(/[^a-z]+/));
+  row.total = rate * qty
 }
+
 
 </script>
 
@@ -50,7 +65,7 @@ const saveBill = ()=>{
         class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2"
         @click="addRow">
         <Icon :iconName="'add'"/>
-        Add
+        Add Item
        </span>
        <!--save button-->
        <Button 
@@ -60,21 +75,22 @@ const saveBill = ()=>{
     </div>
     <hr class="w-full h-[.2175rem] bg-grey_2 border-dashed stroke-[12px] my-2" />
       <div id="items-area" class="max-w-full">
-        <!--heading-->
-        <div id="column-headings" class="w-full flex justify-between">
-          <span v-for="heading in columnHeadings" class="capitalize flex justify-start min-w-[12rem] max-w-[12rem] pl-0 box-border"> {{ heading }} </span>
-        </div>
         <!--empty-->
           <div id="empty-row" class="w-full flex justify-start" v-if="bill.length == 0">
             <p class="text-xs my-2 italic text-grey_1 font-medium">[Note*]: No item is added. Click on the add item above then enter details</p>
           </div>
         <!--items-->
-            <div id="row" v-for="row in bill" class="w-full flex justify-between gap-2 items-center mb-2">
-              <InputField type="text" :customStyle="width" v-model="row.item"/>
-              <InputField type="text" :customStyle="width" v-model="row.qty"/>
-              <InputField type="text" :customStyle="width" v-model="row.rate"/>
-              <InputField type="text" :customStyle="width" v-model="row.rate"/>
-              <Icon :iconName="'trash'" :fill="'red_1'" class="cursor-pointer" alt="delete"/>
+            <div id="row" v-for="(row,index) in bill" class="w-full flex justify-start gap-2 items-center mb-2">
+              <InputField type="text" :customStyle="'min-w-[7.5rem] max-w-[12rem]'" v-model="row.item" placeholder="Item"/>
+              <InputField type="text" :customStyle="'min-w-[5rem] max-w-[7.5rem]'" v-model="row.qty" placeholder="Quantity"/>
+              <InputField type="number" :customStyle="'min-w-[5rem] max-w-[7.5rem]'" v-model="row.rate" placeholder="Rate"/>
+              <InputField type="text" :customStyle="'min-w-[5rem] max-w-[7.5rem]'" v-model="row.total" placeholder="Total" 
+              @focus="calculateRowTotal(row)"/>
+              <Icon :iconName="'trash'" 
+              :fill="'red_1'" 
+              :extraStyle="'cursor-pointer box-border p-2 rounded-[50%] hover:scale-[1.15]'" 
+              alt="delete" 
+              @click="deleteRow(index)"/>
            </div>
       </div>
     </div>

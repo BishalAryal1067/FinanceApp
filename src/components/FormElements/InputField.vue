@@ -6,6 +6,7 @@
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
+      @focus="$emit('focus')"
       :type="inputType"
       :placeholder="placeholder"
       class="border-[.1rem] border-black_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 min-w-[20rem] outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
@@ -19,7 +20,7 @@
 </template>
 
 <script setup>
-defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue", 'focus']);
 
 defineProps({
   inputType: {

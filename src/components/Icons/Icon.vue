@@ -1,12 +1,14 @@
 <template>
-    <i :class="getIconName"
-    :style="`color: ${convertToHex(fill)}`">
+    <i :class="[getIconName, extraStyle]"
+    :style="[`color: ${convertToHex(fill)}`]" @click="$emit('click')" @mouseover="$emit('hover')">
     </i>
 </template>
 
 <script setup>
 import { convertToHex } from '@helper/colorConverter';
 import {computed} from "vue";
+
+defineEmits(['hover', 'click'])
 
 const props = defineProps({
     fill: {
@@ -16,6 +18,10 @@ const props = defineProps({
     iconName: {
         type:String,
         required:true,
+    },
+    extraStyle: {
+        type:String,
+        required:false
     }
 })
 
