@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import InputField from "@component/FormElements/InputField.vue"
 import Button from "@component/FormElements/Button.vue";
 import Icon from '@icon/Icon.vue';
@@ -12,6 +12,8 @@ const buttonClass = 'px-4 py-2 rounded-lg max-w-fit box-border'
 
 //variables for billing
 const bill = reactive([])
+const billHeading = ref('');
+const date = ref('');
 
 //adding row
 const addRow = ()=>{
@@ -29,19 +31,56 @@ const deleteRow = (index) =>{
 const _AUTH_STORE = authStore();
 const _USER_EMAIL = _AUTH_STORE.getSession?.email;
 
+//variable for success dialog
+const showResponseDialog = ref(false);
+const responseHeading = ref('');
+const responseMessage = ref('');
 
-//saving bill details
-// const saveBill = ()=>{
-//   const billDetails = JSON.stringify({user : _USER_EMAIL, billDetails: bill})
-//   console.log(billDetails);
-// }
+//saving bill
+const saveBill = async ()=>{
+  
+  
+  const bill_info = JSON.stringify({heading:billHeading.value, date:date.value, info:JSON.stringify(bill)})
+if(bill_info){
+  const { error } = await supabase
+  .from('Bill')
+  .insert(
+    { user: _USER_EMAIL },
+    { bill_detail: bill_info},
+  )
+  .select()
 
+  if(!error){
+    responseHeading.value = 'Success';
+    responseMessage.value = 'Data saved successfully !';
+    showResponseDialog.value = !showResponseDialog.value;
+  }
+  else{
+    responseHeading.value = 'Error';
+    responseMessage.value = 'Unable to save data !' || error?.message;
+    showResponseDialog.value = !showResponseDialog.value;
+  }
+}
+else {
+  alert('null');
+}
+
+
+
+
+}
+console.log('bill', bill)
 //calculate row total
 const calculateRowTotal = (row)=>{
   const qty = Number(row.qty?.trim().match(/[^a-z]+/));
   const rate = Number(row.rate?.trim().match(/[^a-z]+/));
   row.total = rate * qty
 }
+
+//
+watch(()=>bill, newVal=>{
+  console.log('bill new value= ', newVal);
+})
 
 
 </script>
@@ -59,8 +98,8 @@ const calculateRowTotal = (row)=>{
     <!--bill-->
     <div id="bill" class="bg-grey_2 max-w-fit box-border px-3 py-2 rounded">
       <div id="bill-header" class="flex gap-2">
-        <InputField :placeholder="'Bill heading...'"/>
-        <InputField :inputType="'date'" :placeholder="'date'"/>
+        <InputField :placeholder="'Bill heading...'" v-model="billHeading"/>
+        <InputField :inputType="'date'" :placeholder="'date'" v-model="date"/>
         <span 
         class="bg-[teal] flex items-center gap-2 justify-center px-2 py-1 rounded-lg cursor-pointer text-sm font-semibold text-grey_2"
         @click="addRow">
@@ -96,6 +135,10 @@ const calculateRowTotal = (row)=>{
     </div>
   </div>
   </div>
+  <!--success Dialog-->
+  <BasicModal :showModal="showResponseDialog" :heading="responseHeading" :message="responseMessage" @close="showResponseDialog = !showResponseDialog">
+    <Button :label="'Ok'" />
+  </BasicModal>
 </template>
 
 

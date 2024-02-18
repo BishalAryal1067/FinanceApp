@@ -1,5 +1,5 @@
-name: deployment
-run-name: pushed by @${{ github.actor }}
+name: Deployment
+run-name: Deployment Pipeline -- ${{github.event_name}} by ${{github.actor}} in ${{github.ref}}
 
 on:
     push: 
@@ -10,6 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v4
+        - run: npm run build
         - run: echo "Deploying code !"
 
 
