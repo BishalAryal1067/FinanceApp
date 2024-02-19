@@ -24,7 +24,6 @@ const addRow = ()=>{
 const deleteRow = (index) =>{
   console.log(index);
   bill.splice(index,1);
-  console.log(bill)
 }
 
 //getting current user
@@ -37,23 +36,20 @@ const responseHeading = ref('');
 const responseMessage = ref('');
 
 //saving bill
-const saveBill = async ()=>{
-  
-  
-  const bill_info = JSON.stringify({heading:billHeading.value, date:date.value, info:JSON.stringify(bill)})
-if(bill_info){
-  const { error } = await supabase
+const saveBill = async ()=>{  
+const { error } = await supabase
   .from('Bill')
   .insert(
-    { user: _USER_EMAIL },
-    { bill_detail: bill_info},
+    { user: _USER_EMAIL,
+      bill_detail: JSON.stringify({'bill_title': billHeading.value, 'bill_date': date.value, 'items' : bill })},
   )
-  .select()
+
 
   if(!error){
     responseHeading.value = 'Success';
     responseMessage.value = 'Data saved successfully !';
     showResponseDialog.value = !showResponseDialog.value;
+    bill.length = 0;
   }
   else{
     responseHeading.value = 'Error';
@@ -61,28 +57,13 @@ if(bill_info){
     showResponseDialog.value = !showResponseDialog.value;
   }
 }
-else {
-  alert('null');
-}
 
-
-
-
-}
-console.log('bill', bill)
 //calculate row total
 const calculateRowTotal = (row)=>{
   const qty = Number(row.qty?.trim().match(/[^a-z]+/));
   const rate = Number(row.rate?.trim().match(/[^a-z]+/));
   row.total = rate * qty
 }
-
-//
-watch(()=>bill, newVal=>{
-  console.log('bill new value= ', newVal);
-})
-
-
 </script>
 
 <template>
