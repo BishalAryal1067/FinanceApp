@@ -11,6 +11,7 @@ import {authStore} from "@store/AuthStore.js";
 const buttonClass = 'px-4 py-2 rounded-lg max-w-fit box-border'
 
 //variables for billing
+const billList = reactive([]);
 const bill = reactive([])
 const billHeading = ref('');
 const date = ref('');
@@ -41,10 +42,8 @@ const { error } = await supabase
   .from('Bill')
   .insert(
     { user: _USER_EMAIL,
-      bill_detail: JSON.stringify({'bill_title': billHeading.value, 'bill_date': date.value, 'items' : bill })},
+    bill_detail: JSON.stringify({'bill_title': billHeading.value, 'bill_date': date.value, 'items' : bill })},
   )
-
-
   if(!error){
     responseHeading.value = 'Success';
     responseMessage.value = 'Data saved successfully !';
@@ -69,11 +68,7 @@ const calculateRowTotal = (row)=>{
 <template>
   <div class="flex flex-col mt-4 gap-2">
     <!--header-->
-    <Button 
-    :label="'Bill'" 
-    :class="[buttonClass, 'bg-blue_light']">
-   <Icon :iconName="'plus'" fill="black"/>
-  </Button>
+    <p class="text-xl text-[white]">Create a Bill</p>
   <!--Bill section-->
   <div id="bill-section" class="w-full box-border pr-2 flex-wrap">
     <!--bill-->
