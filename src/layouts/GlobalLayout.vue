@@ -1,11 +1,11 @@
 <template>
-    <div class="flex max-w-screen justify-between bg-black_1">
+    <div class="flex max-w-screen justify-between bg-black_1" v-once>
     <!--navigation bar-->
-     <div class="max-w-fit">
+     <div class="max-w-fit" v-memo="[Navbar]">
         <Navbar/>
      </div>
      <!--component to be rendered based on route-->
-     <div class="w-[80%]">
+     <div class="w-[80%]" v-memo="[RouterView]">
         <slot>
             <RouterView/>
           </slot>

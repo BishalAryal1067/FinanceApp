@@ -5,7 +5,8 @@ import Button from "@component/FormElements/Button.vue";
 import Icon from '@icon/Icon.vue';
 import BasicModal from '@component/Modal/BasicModal.vue';
 import { supabase } from "@controller/supabaseConnection";
-import {authStore} from "@store/AuthStore.js";
+import { authStore } from "@store/AuthStore.js";
+import {sendBillInformation} from "@controller/sendData"
 
 //styling for button
 const buttonClass = 'px-4 py-2 rounded-lg max-w-fit box-border'
@@ -38,12 +39,12 @@ const responseMessage = ref('');
 
 //saving bill
 const saveBill = async ()=>{  
-const { error } = await supabase
-  .from('Bill')
-  .insert(
-    { user: _USER_EMAIL,
+const error = await sendBillInformation(
+  { user: _USER_EMAIL,
+    id : 26,
     bill_detail: JSON.stringify({'bill_title': billHeading.value, 'bill_date': date.value, 'items' : bill })},
-  )
+)
+
   if(!error){
     responseHeading.value = 'Success';
     responseMessage.value = 'Data saved successfully !';

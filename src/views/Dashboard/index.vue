@@ -1,47 +1,40 @@
-<script setup>
-import GlobalLayout from "@layout/GlobalLayout.vue";
-import Table from "@component/Table/Table.vue";
-import { getBillInformation } from "@controller/fetchData";
-
-import { onMounted, ref } from "vue";
-
-let tableHeadings = ['Items', 'Date', 'Cost', 'Total'];
-const tableData = ref([])
-onMounted(async () => {
-  const bill = await getBillInformation();
-  tableData.value = bill?.data;
-  //getting dates on which items were purchased
-  let purchaseDates = new Set();
-  
-  tableData.value.forEach(data => {
-    purchaseDates = purchaseDates.add(data.date);
-  })
-  //getting items purchased in the date
-  let itemsByDate = purchaseDates.forEach(val => {
-    return {
-      purchaseDate: val,
-      items: [],
-      costs: []
-    }
-  })
-  // tableData.value.forEach(data=>{
-  //   itemsByDate.map(item=>{
-  //     if(item.purchaseDate == data.date){
-  //       item.items.push(data.item);
-  //       item.costs.push(data.cost)
-  //     }
-  //   })
-  // })
-})
-
-</script>
-
 <template>
   <GlobalLayout>
     <div class="w-full bg-black_1 h-screen max-h-screen flex gap-3">
-      <Table :table-style="'bg-teal w-[80%] max-h-[45vh] rounded-lg mt-5 table-fixed'"
-        :heading-style="'text-lg text-[white]'" :table-data="tableData" :headings="tableHeadings">
-      </Table>
+      <!--div to show cards--> 
+      <div v-if="bill_list.length > 0">
+          <p class="text-xl text-[white]"> bill </p>
+      </div>
     </div>
   </GlobalLayout>
 </template>
+
+<script setup>
+import GlobalLayout from "@layout/GlobalLayout.vue";
+import getBillInformation from "@controller/fetchData";
+import { ref, onMounted, reactive, watch } from "vue";
+
+const bill_list = reactive([])
+const bill_error = reactive([]);
+
+onMounted(async()=>{
+ const {data:list,error} = await getBillInformation();
+ if(!error){
+  bill_list.values = list;
+ }
+ else {
+  bill_error.values = error;
+ }
+})
+
+watch(()=>bill_list.values,(newVal)=>{
+  bill_list.values = newVal;
+  bill_list.forEach(bill=>{
+    console.log(bill)
+  })
+}, {deep:true});
+
+watch(()=>bill_error.values, (newVal)=>{
+  bill_error.values=newVal;
+}, {deep:true})
+</script>
