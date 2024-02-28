@@ -4,8 +4,18 @@
       <!--cards wrapper-->
       <div class="flex gap-2">
         <TransitionGroup name="slide">
-          <div v-for="(bill, index) in state.billInformation" :key="index" class="w-[7.5rem] h-[7.5rem] bg-blue_shade_1 rounded-md">
-            <p class="text-[white]"> {{ bill?.bill_detail?.bill_title }} </p>
+          <div id="card" 
+            v-for="(bill, index) in state.billInformation" :key="index" 
+            class="w-[15rem] h-[7.5rem] box-border px-[.65rem] py-[.25rem] rounded-md flex flex-col justify-start items-start bg-grey_3 cursor-pointer hover:scale-[.97]">
+            <div class="w-full flex justify-between items-center border-b-[1px] border-b-grey_2">
+            <p class="text-[white] text-lg"> {{ bill?.bill_detail?.bill_title }} </p>
+            <p class="text-[white] text-normal opacity-[.65]"> {{ getShortDate(bill?.bill_detail?.bill_date) }} </p>
+            </div>
+            <div class="pt-2 flex flex-col gap-1">
+            <p class="text-[white] text-sm"> Total items: <span class="font-bold"> {{bill?.bill_detail?.items.length}} </span> </p>
+            <p class="text-[white] text-sm"> Total Spent: <span class="font-bold"> NRS. {{getTotalCost(bill?.bill_detail?.items)}} </span> </p>
+            </div>
+
           </div>
         </TransitionGroup>
       </div>
@@ -16,7 +26,22 @@
 <script setup>
 import GlobalLayout from "@layout/GlobalLayout.vue";
 import getBillInformation from "@controller/fetchData";
+import getMonth from "@controller/getMonth";
 import { ref, onMounted, reactive, watch, TransitionGroup } from "vue";
+
+
+const getShortDate = (date)=>{
+  let shortDate =  new Date(date);
+  return shortDate = shortDate.getFullYear() + ' '+ getMonth([shortDate.getMonth()]) + ' '+ shortDate.getDate();
+}
+
+const getTotalCost = (items=>{
+  let totalCost = 0;
+  items.forEach(item=>{
+    totalCost += Number(item?.total)
+  })
+  return totalCost;
+})
 
 const state = reactive({ billInformation: [] });
 onMounted(() => {
@@ -28,20 +53,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped> xa .list-enter-active,
- .list-leave-active {
-   transition: all 0.25s ease;
- }
-
- .list-enter-from,
- .list-leave-to {
-   opacity: 0;
-   transform: scale(0)
- }
-
- .list-leave-active {
-   position: absolute;
- }
+<style scoped>
 
  .slide-enter-from,
  .slide-leave-to {
@@ -52,5 +64,9 @@ onMounted(() => {
  .slide-enter-active,
  .slide-leave-active {
    transition: all .35s ease-in-out;
+ }
+
+ #card {
+   transition: transform .35s ease;
  }
 </style>
