@@ -44,9 +44,7 @@ const registerUser = async () => {
       password: formData.password,
     });
     if (!error) {
-      const confirmationRoute = router.resolve({ name: "auth.confirmation" });
-      window.open(confirmationRoute.href);
-      router.push({ name: "auth.login" });
+      router.push({ name: "auth.confirmation" });
     }
   }
 };
