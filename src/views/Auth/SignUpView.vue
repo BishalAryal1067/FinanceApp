@@ -47,9 +47,7 @@ const registerUser = async () => {
     });
     console.log(user);
     if (!error) {
-      const confirmationRoute = router.resolve({ name: "auth.confirmation" });
-      window.open(confirmationRoute.href);
-      router.push({ name: "auth.login" });
+      router.push({ name: "auth.confirmation" });
     }
     console.log(error);
   }
