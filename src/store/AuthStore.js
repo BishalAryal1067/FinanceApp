@@ -13,7 +13,11 @@ export const authStore = defineStore('authStore',()=>{
     const user = {email: email, isLoggedIn:true, date:new Date()}
     localStorage.setItem('session', JSON.stringify(user));
   }
+  
+  const clearSession=()=>{
+    localStorage.removeItem('session');
+  }
 
-  return {userSession, getSession, setSession}
+  return {userSession, getSession, setSession,clearSession}
 
 });

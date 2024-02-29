@@ -2,10 +2,13 @@
 import Icon from "@icon/Icon.vue";
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {logoutUser} from "@controller/authController";
+import {authStore} from "@store/AuthStore";
 
 const activeNavItem = ref([]);
 const router = useRouter();
 const route = useRoute();
+const authSession = authStore();
 
 const navItems = [
   {title:'Manage your finanaces', icon:'coins', path:'dashboard'},
@@ -24,6 +27,18 @@ const handleNavigation = async (item)=>{
 const handleActiveRoute = (path)=>{
   activeNavItem.value.pop();
     activeNavItem.value.push(path);
+}
+
+const handleLougout = async () =>{
+  const {err} = await logoutUser();
+  if(!err){
+    authSession.clearSession();
+   router.push({name : "auth.login"});
+  }
+  else {
+    alert('LogoutFailed')
+  }
+  console.info()
 }
 
 onMounted(()=>{
@@ -49,6 +64,8 @@ onMounted(()=>{
       v-if="activeNavItem[0]==item.path"></span>
       </Transition>
     </div>
+
+    <button @click="handleLougout">Logout</button>
   </div>
 </template>
 
