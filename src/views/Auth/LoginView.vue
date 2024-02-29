@@ -16,11 +16,7 @@ import { authStore } from "@store/AuthStore";
 import Icon from "@icon/Icon.vue";
 
 
-
 const authSession = authStore();
-console.log(authSession);
-
-
 const router = useRouter();
 
 const formData = reactive({
@@ -31,7 +27,6 @@ const formData = reactive({
 onMounted(() => {
   authError.value = [];
   if(authSession.userSession){
-    console.log("current user =", authSession.userSession.email);
     router.push({ name: "dashboard" });
   }
 });
