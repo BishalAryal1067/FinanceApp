@@ -27,11 +27,13 @@
 import GlobalLayout from "@layout/GlobalLayout.vue";
 import getBillInformation from "@controller/fetchData";
 import getMonth from "@controller/getMonth";
-import { ref, onMounted, reactive, watch, TransitionGroup } from "vue";
+import { ref, onMounted,onUpdated, reactive, watch, TransitionGroup } from "vue";
 import {authStore} from "@store/AuthStore";
+import {useRouter} from "vue-router";
 
 const _AUTH_STORE = authStore();
 const _CURRENT_USER = _AUTH_STORE.getSession?.email;
+const router = useRouter();
 
 
 const getShortDate = (date)=>{
@@ -49,11 +51,21 @@ const getTotalCost = (items=>{
 
 const state = reactive({ billInformation: [] });
 onMounted(() => {
+  //check for session 
+  if(!_AUTH_STORE.getSession){
+    router.push({name: "auth.login"});
+  }
   getBillInformation(_CURRENT_USER).then(res => {
     res.forEach(item => {
       state.billInformation.push({ id: item?.id, user: item?.user, bill_detail: JSON.parse(item?.bill_detail) })
     })
   });
+});
+
+onUpdated(()=>{
+  if(!_AUTH_STORE.getSession){
+    router.push({name:"auth.login"});
+  }
 })
 </script>
 
