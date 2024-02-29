@@ -2,8 +2,7 @@
 
 defineProps({
   label: {
-    type: String,
-    default: "Submit",
+    type: String || null,
   },
   class : String,
 });
