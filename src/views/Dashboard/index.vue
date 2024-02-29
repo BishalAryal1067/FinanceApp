@@ -28,6 +28,10 @@ import GlobalLayout from "@layout/GlobalLayout.vue";
 import getBillInformation from "@controller/fetchData";
 import getMonth from "@controller/getMonth";
 import { ref, onMounted, reactive, watch, TransitionGroup } from "vue";
+import {authStore} from "@store/AuthStore";
+
+const _AUTH_STORE = authStore();
+const _CURRENT_USER = _AUTH_STORE.getSession?.email;
 
 
 const getShortDate = (date)=>{
@@ -45,7 +49,7 @@ const getTotalCost = (items=>{
 
 const state = reactive({ billInformation: [] });
 onMounted(() => {
-  getBillInformation().then(res => {
+  getBillInformation(_CURRENT_USER).then(res => {
     res.forEach(item => {
       state.billInformation.push({ id: item?.id, user: item?.user, bill_detail: JSON.parse(item?.bill_detail) })
     })
