@@ -32,9 +32,8 @@ const handleActiveRoute = (path)=>{
 const handleLougout = async () =>{
   const {err} = await logoutUser();
   if(!err){
-   //authSession.clearSession();
-   router.push({name : "auth.login"});
    authSession.clearSession();
+   router.push({name : "auth.login"});
   }
   else {
     alert('LogoutFailed')
@@ -52,7 +51,9 @@ onMounted(()=>{
   <div
     class="flex flex-col min-w-[7.5rem] items-center justify-between text-xl py-12 gap-6 bg-black_2 h-screen max-h-screen"
   >
+    <!--wrapper for navigation elements-->
     <div id="navigation_wrapper" class="flex flex-col jutify-start gap-6 items-center">
+    <!--navigation elements-->
     <div id="nav-box" 
     v-for="(item, index) in navItems" 
     class="cursor-pointer flex flex-col justify-center items-center gap-[.125rem]" 
@@ -67,10 +68,12 @@ onMounted(()=>{
       </Transition>
     </div>
     </div>
-
+    <!--Logout Button-->
+    <tippy :content="'Logout'">
     <Button @click="handleLougout">
       <Icon :iconName="'right-from-bracket'" fill="red_2"/>
     </Button>
+    </tippy>
   </div>
 </template>
 
