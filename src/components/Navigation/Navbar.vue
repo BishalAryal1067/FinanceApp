@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {logoutUser} from "@controller/authController";
 import {authStore} from "@store/AuthStore";
-
+import  Button from '@component/FormElements/Button.vue';
 const activeNavItem = ref([]);
 const router = useRouter();
 const route = useRoute();
@@ -32,8 +32,9 @@ const handleActiveRoute = (path)=>{
 const handleLougout = async () =>{
   const {err} = await logoutUser();
   if(!err){
-    authSession.clearSession();
+   //authSession.clearSession();
    router.push({name : "auth.login"});
+   authSession.clearSession();
   }
   else {
     alert('LogoutFailed')
@@ -49,8 +50,9 @@ onMounted(()=>{
 
 <template>
   <div
-    class="flex flex-col min-w-[7.5rem] items-center justify-start text-xl py-12 gap-6 bg-black_2 h-screen max-h-screen"
+    class="flex flex-col min-w-[7.5rem] items-center justify-between text-xl py-12 gap-6 bg-black_2 h-screen max-h-screen"
   >
+    <div id="navigation_wrapper" class="flex flex-col jutify-start gap-6 items-center">
     <div id="nav-box" 
     v-for="(item, index) in navItems" 
     class="cursor-pointer flex flex-col justify-center items-center gap-[.125rem]" 
@@ -64,8 +66,11 @@ onMounted(()=>{
       v-if="activeNavItem[0]==item.path"></span>
       </Transition>
     </div>
+    </div>
 
-    <button @click="handleLougout">Logout</button>
+    <Button @click="handleLougout">
+      <Icon :iconName="'right-from-bracket'" fill="red_2"/>
+    </Button>
   </div>
 </template>
 
