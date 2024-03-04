@@ -13,4 +13,9 @@ const logoutUser = async () =>{
   return {err};
 }
 
-export {loginUser, logoutUser};
+const resetPasswordWithEmail=async (email)=>{
+  const {err} = await supabase.auth.resetPasswordForEmail(email);
+  return {err}
+}
+
+export {loginUser, logoutUser, resetPasswordWithEmail};
