@@ -1,9 +1,10 @@
 import Dashboard from "./index.vue";
+import Route from "../../types/routes";
 
-const dashboardRoutes = {
+const dashboardRoutes: Route = {
   path: "/dashboard",
-  component: Dashboard,
   name: "dashboard",
+  component: Dashboard,
 };
 
 export default dashboardRoutes;

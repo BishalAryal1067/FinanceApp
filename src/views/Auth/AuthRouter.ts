@@ -23,8 +23,8 @@ const AuthRoutes = {
       component: ConfirmationView,
     },
     {
-      path:"reset-password",
-      name:"auth.reset_password",
+      path: "reset-password",
+      name: "auth.reset_password",
       component: ResetPassword
     }
   ],

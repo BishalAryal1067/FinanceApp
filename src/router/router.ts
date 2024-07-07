@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 //importing routes
 import AuthRoutes from "@view/Auth/AuthRouter";
@@ -9,9 +9,13 @@ const Home = {
   path: "/",
   redirect: "/auth",
 };
+
+
+const appRoutes: RouteRecordRaw[] = [Home, AuthRoutes, DashboardRoutes, AddDetailRoutes, SettingsRoutes]
+
 const router = createRouter({
   history: createWebHistory(),
-  routes: [Home, AuthRoutes, DashboardRoutes, AddDetailRoutes, SettingsRoutes],
+  routes: appRoutes,
 });
 
 export default router;

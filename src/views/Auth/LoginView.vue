@@ -8,7 +8,7 @@ import { email, required } from "@vuelidate/validators";
 //importing elements
 import InputField from "@component/FormElements/InputField.vue";
 import Button from "@component/FormElements/Button.vue";
-import { convertToHex } from "@helper/colorConverter.js";
+import { convertToHex } from "@helper/colorConverter.ts";
 //import router
 import { useRouter } from "vue-router";
 import { authStore } from "@store/AuthStore";

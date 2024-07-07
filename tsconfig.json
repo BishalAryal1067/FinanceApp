@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "isolatedModules": true,
+        "noEmit": true
+    },
+    "include": [
+        "src/**/*.ts",   // Include all TypeScript files directly under src
+        "src/*.vue",  // Include all Vue files directly under src
+        "src/*.d.ts"  // Include all declaration files directly under src
+    ]
+}
