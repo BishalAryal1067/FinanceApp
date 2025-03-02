@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseConnection.js";
+import { supabase } from "./supabaseConnection.ts";
 
 // function to upload Bill Information
 export async function sendBillInformation(payload) {

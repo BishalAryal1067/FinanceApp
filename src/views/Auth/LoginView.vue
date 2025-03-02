@@ -11,24 +11,17 @@ import Button from "@component/FormElements/Button.vue";
 import { convertToHex } from "@helper/colorConverter.ts";
 //import router
 import { useRouter } from "vue-router";
-import { authStore } from "@store/AuthStore";
+
+//import actions from auth authStore
+import authActions from "@store/Auth/actions";
 //import icon
 import Icon from "@icon/Icon.vue";
 
-
-const authSession = authStore();
 const router = useRouter();
 
 const formData = reactive({
   email: "",
   password: "",
-});
-
-onMounted(() => {
-  authError.value = [];
-  if(authSession.userSession){
-    router.push({ name: "dashboard" });
-  }
 });
 
 const authError = ref([]);
@@ -49,10 +42,11 @@ const loginUser = async () => {
         email: formData.email,
         password: formData.password,
       });
+      if (data) {
+      }
       if (error) {
         authError.value.push("Unable to login!");
       } else {
-        authSession.setSession(formData.email);
         router.push({ name: "dashboard" });
       }
     } else {
@@ -99,8 +93,7 @@ const loginUser = async () => {
           v-if="authError.length > 0"
           class="w-full flex items-center justify-center gap-2 border-[.5px] border-red_1 rounded-lg py-2 text-xs text-red_1"
         >
-
-        <Icon :iconName="'triangle-exclamation'" :fill="'red_1'"/>
+          <Icon :iconName="'triangle-exclamation'" :fill="'red_1'" />
           {{ authError[0] }}
         </div>
 

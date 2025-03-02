@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseConnection.js";
+import { supabase } from "./supabaseConnection.ts";
 
 // function to getBill Information
 export default async function getBillInformation(currentUser) {

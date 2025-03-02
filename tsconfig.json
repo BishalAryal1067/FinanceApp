@@ -8,8 +8,37 @@
         "noEmit": true
     },
     "include": [
-        "src/**/*.ts",   // Include all TypeScript files directly under src
-        "src/*.vue",  // Include all Vue files directly under src
-        "src/*.d.ts"  // Include all declaration files directly under src
-    ]
+        "src/**/*.ts", // Include all TypeScript files directly under src
+        "src/*.vue", // Include all Vue files directly under src
+        "src/*.d.ts" // Include all declaration files directly under src
+    ],
+    "paths": {
+        "@/*": [
+            "./src/*"
+        ],
+        "@component/*": [
+            "./src/components/*"
+        ],
+        "@icon/*": [
+            "./src/components/Icons/*"
+        ],
+        "@controller/*": [
+            "./src/controllers/*"
+        ],
+        "@helper/*": [
+            "./src/helpers/*"
+        ],
+        "@view/*": [
+            "./src/views/*"
+        ],
+        "@router/*": [
+            "./src/router/*"
+        ],
+        "@store/*": [
+            "./src/stores/*"
+        ],
+        "@layout/*": [
+            "./src/layouts/*"
+        ]
+    }
 }
