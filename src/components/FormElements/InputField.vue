@@ -8,8 +8,9 @@
       @input="$emit('update:modelValue', $event.target.value)"
       @focus="$emit('focus')"
       :type="inputType"
+      ref="inputRef"
       :placeholder="placeholder"
-      class="border-[.1rem] border-black_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 min-w-[20rem] outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
+      class="border-[.1rem] border-black_2 rounded-md text-[.95rem] text-black_2 font-medium p-2 outline-none focus:outline-[2px] focus-visible:outline-offset-[-1px] focus:outline-green_1"
       :class="[{
         'outline-red_1 outline-offset-[-1px] focus:outline-red_1 focus:outline-offset-[-1px]':
           hasError,
@@ -45,6 +46,9 @@ defineProps({
   },
   customStyle:{
     type: String
+  },
+  refValue: {
+   required: false,
   }
 });
 </script>

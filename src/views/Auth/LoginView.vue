@@ -31,7 +31,7 @@ const validationRules = {
   email: { required },
   password: { required },
 };
-//initalizing validation
+//initializing validation
 const validation = useVuelidate(validationRules, formData);
 
 const loginUser = async () => {

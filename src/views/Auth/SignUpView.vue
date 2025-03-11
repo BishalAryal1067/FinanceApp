@@ -37,7 +37,7 @@ console.log(supabase);
 
 //method to register user
 const registerUser = async () => {
-  //vaildate fields
+  //validate fields
   const validationResult = await validation.value.$validate();
 
   if (validationResult) {
