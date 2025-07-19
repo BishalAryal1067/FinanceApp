@@ -1,25 +1,5 @@
-<script setup>
-import { reactive, onMounted, ref, watch } from "vue";
+<script setup lang="ts">
 import Icon from "@icon/Icon.vue";
-import InputField from "@component/FormElements/InputField.vue";
-
-const otp = reactive({
-      0 : "",
-      1: "" ,
-      
-});
-
-const otpInput = ref(null);
-
-onMounted(()=>{
-  console.log(otpInput)
-  otpInput.value.focus()
-})
-
-watch(otpInput, ()=>{
-   if(otpInput) console.log(otpInput)
-})
-
 </script>
 
 <template>
@@ -29,16 +9,7 @@ watch(otpInput, ()=>{
             <Icon :fill="'blue_shade_1'" :iconName="'envelope'"/>
             <h1 class="text-blue_shade_1 mb-0 text-lg font-bold">Check your email for verification</h1>
         </div>
-        <!--otp container-->
-        <div class="w-full flex justify-center m-h-fit gap-2" id="otp-input-container">
-            <input-field 
-                v-for="i in 6"
-                :ref="otpInput"
-                :key="i" 
-                type="text" 
-                custom-style="w-[2rem]"
-            />
-         </div>                                                                         
+        <p> The verification link has been sent to your email. </p>
       </div>
     </div> 
 </template>
