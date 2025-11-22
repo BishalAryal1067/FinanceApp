@@ -1,5 +1,5 @@
 <script setup lang='ts'>
- let isLoading = true;
+ const isLoading = ref(false);
 
  const accounts = [
      {
@@ -27,7 +27,7 @@
  ]
 
  setTimeout(()=> {
-   isLoading = false;
+   isLoading.value = false;
  }, 250);
 
 </script>
@@ -45,7 +45,7 @@
               <template #default>
                 <div 
                   v-for='account in accounts' 
-                  :id='account.id'
+                  :key='account.id'
                   class='flex w-full justify-between text-xs font-medium py-1'
                   >
                     <div class='w-8 max-w-8'>{{ account.abbr }} </div>

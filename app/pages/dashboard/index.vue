@@ -5,7 +5,8 @@ definePageMeta({
 </script>
 
 <template>
-    <UContainer class='w-full py-0'>
-        <accounts />
+    <UContainer class='w-full py-2'>
+        <UserAccounts />
+        <MonthlyCalendar />
     </UContainer>
 </template>

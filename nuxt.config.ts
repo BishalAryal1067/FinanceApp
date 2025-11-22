@@ -10,7 +10,8 @@ export default defineNuxtConfig({
         '@nuxt/test-utils',
         '@nuxt/image',
         '@nuxt/scripts',
-        '@vite-pwa/nuxt'
+        '@vite-pwa/nuxt',
+        '@nuxt/test-utils/module'
     ],
 
     pwa: {
